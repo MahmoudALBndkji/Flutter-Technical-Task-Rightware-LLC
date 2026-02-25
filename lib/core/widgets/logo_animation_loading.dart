@@ -1,10 +1,11 @@
 import 'dart:ui';
-import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_technical_task_rightware_llc/core/utils/assets.dart';
+import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
+import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
 
 class LogoAnimationLoading extends StatefulWidget {
   final String message;
-
   const LogoAnimationLoading({super.key, this.message = 'loading'});
 
   @override
@@ -51,7 +52,7 @@ class _LogoAnimationLoadingState extends State<LogoAnimationLoading>
               builder: (context, child) {
                 return Transform.translate(
                   offset: Offset(0, _animation.value),
-                  child: FlutterLogo(size: 100),
+                  child: Image.asset(AssetsImage.logo, width: 150, height: 150),
                 );
               },
             ),
@@ -65,7 +66,7 @@ class _LogoAnimationLoadingState extends State<LogoAnimationLoading>
               child: Text(
                 widget.message.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: AppColors.primaryColor),
               ),
             ),
           ],

@@ -31,7 +31,6 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,8 +38,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
         Image.asset(
           AssetsImage.logo,
           fit: BoxFit.contain,
-          width: widthScreen / 2,
-          height: widthScreen / 1.5,
+          width: 150,
+          height: 150,
         ),
         const SizedBox(height: 30.0),
         SlidingText(slidingAnimation: slidingAnimation),
@@ -60,7 +59,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
     animationController.forward();
   }
 
-  void navigateToLogin() {
-    Future.delayed(const Duration(seconds: 2), () => context.go(AppPaths.home));
-  }
+  void navigateToLogin() => Future.delayed(
+    const Duration(seconds: 2),
+    () => context.go(AppPaths.home),
+  );
 }
