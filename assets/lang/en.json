@@ -53,5 +53,7 @@
   "remove": "Remove",
   "change_language": "Change language",
   "app_name": "Grocery Stores App",
-  "version": "Version"
+  "version": "Version",
+  "offline": "You are offline",
+  "online": "You are back online"
 }
