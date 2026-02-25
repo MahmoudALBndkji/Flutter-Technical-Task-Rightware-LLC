@@ -26,7 +26,7 @@ class HomeLayout extends StatelessWidget {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.store_outlined),
-                label: 'Shops',
+                label: context.tr('grocery_stores'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings_outlined),

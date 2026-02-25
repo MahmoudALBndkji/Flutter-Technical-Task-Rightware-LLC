@@ -14,7 +14,7 @@ class SlidingText extends StatelessWidget {
       child: Text(
         "Grocery Stores",
         textAlign: TextAlign.center,
-        style: TextStyles.textStyle20.copyWith(color: AppColors.blackColor),
+        style: TextStyles.textStyle20.copyWith(color: AppColors.primaryColor),
       ),
     ),
   );

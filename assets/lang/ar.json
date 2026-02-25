@@ -29,5 +29,20 @@
   "favourite": "المفضلة",
   "settings": "الإعدادات",
   "no_favourites_yet": "لا يوجد مفضلات بعد",
-  "retry": "إعادة المحاولة"
+  "retry": "إعادة المحاولة",
+  "grocery_stores": "متاجر البقالة",
+  "search_by_name_or_description": "البحث بالاسم أو الوصف",
+  "sort": "ترتيب",
+  "sort_eta_asc": "وقت التوصيل (تصاعدي)",
+  "sort_min_order_asc": "الحد الأدنى للطلب (تصاعدي)",
+  "open_only": "المفتوحة فقط",
+  "clear": "مسح",
+  "no_shops_available": "لا توجد متاجر",
+  "no_results": "لا توجد نتائج",
+  "try_different_search_or_filters": "جرّب بحثاً أو تصفية أخرى",
+  "eta": "وقت التوصيل",
+  "min_order": "الحد الأدنى",
+  "open": "مفتوح",
+  "closed": "مغلق",
+  "users": "المستخدمون"
 }

@@ -2,9 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_technical_task_rightware_llc/core/base/base_state.dart';
+import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
+import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
 import 'package:flutter_technical_task_rightware_llc/core/widgets/logo_animation_loading.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/cubits/shop/shop_cubit.dart';
-import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shop_card.dart';
+import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/animated_shop_card.dart';
+import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shops_clear_filters_button.dart';
+import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shops_filter_bar.dart';
+import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shops_search_bar.dart';
 
 class ShopsListView extends StatefulWidget {
   const ShopsListView({super.key});
@@ -36,15 +41,18 @@ class _ShopsListViewState extends State<ShopsListView> {
     return BlocConsumer<ShopCubit, ShopState>(
       listener: (context, state) {
         if (state.shops.status.isFailure && state.shops.error != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.shops.error!)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.shops.error!),
+              backgroundColor: AppColors.cancelledColor,
+            ),
+          );
         }
       },
       buildWhen: (p, c) => p != c,
       builder: (context, state) {
         if (state.shops.status.isLoading && state.shops.data == null) {
-          return const LogoAnimationLoading();
+          return LogoAnimationLoading(message: 'loading');
         }
         if (state.shops.status.isFailure) {
           return Center(
@@ -53,18 +61,29 @@ class _ShopsListViewState extends State<ShopsListView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64, color: Colors.grey[600]),
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: AppColors.primaryColor.withValues(alpha: 0.6),
+                  ),
                   const SizedBox(height: 16),
                   Text(
-                    state.shops.error ?? 'Error',
+                    state.shops.error ?? context.tr('error'),
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.primaryColor.withValues(alpha: 0.9),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   FilledButton.icon(
                     onPressed: () => context.read<ShopCubit>().loadShops(),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor,
+                      foregroundColor: AppColors.whiteColor,
+                    ),
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
+                    label: Text(context.tr('retry')),
                   ),
                 ],
               ),
@@ -80,89 +99,33 @@ class _ShopsListViewState extends State<ShopsListView> {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.only(bottom: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TextField(
+                    ShopsSearchBar(
                       controller: _searchController,
                       onChanged: _onSearchChanged,
-                      decoration: InputDecoration(
-                        hintText: 'Search by name or description',
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        filled: true,
-                      ),
+                      hintText: context.tr('search_by_name_or_description'),
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButtonFormField<ShopSortBy>(
-                            key: ValueKey(state.sortBy),
-                            initialValue: state.sortBy,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                            ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: ShopSortBy.none,
-                                child: Text('Sort'),
-                              ),
-                              DropdownMenuItem(
-                                value: ShopSortBy.etaAsc,
-                                child: Text('ETA (asc)'),
-                              ),
-                              DropdownMenuItem(
-                                value: ShopSortBy.minOrderAsc,
-                                child: Text('Min order (asc)'),
-                              ),
-                            ],
-                            onChanged: (v) {
-                              if (v != null)
-                                context.read<ShopCubit>().setSortBy(v);
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Open only',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                            Switch(
-                              value: state.openOnly,
-                              onChanged: (v) =>
-                                  context.read<ShopCubit>().setOpenOnly(v),
-                            ),
-                          ],
-                        ),
-                      ],
+                    const SizedBox(height: 12),
+                    ShopsFilterBar(
+                      sortBy: state.sortBy,
+                      openOnly: state.openOnly,
+                      onSortChanged: (v) =>
+                          context.read<ShopCubit>().setSortBy(v),
+                      onOpenOnlyChanged: (v) =>
+                          context.read<ShopCubit>().setOpenOnly(v),
                     ),
                     if (state.hasActiveFilters) ...[
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: TextButton.icon(
+                        child: ShopsClearFiltersButton(
                           onPressed: () {
                             _searchController.clear();
                             context.read<ShopCubit>().clearFilters();
                           },
-                          icon: const Icon(Icons.clear_all, size: 18),
-                          label: const Text('Clear'),
                         ),
                       ),
                     ],
@@ -171,8 +134,27 @@ class _ShopsListViewState extends State<ShopsListView> {
               ),
             ),
             if (isEmpty)
-              const SliverFillRemaining(
-                child: Center(child: Text('No shops available')),
+              SliverFillRemaining(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.store_outlined,
+                        size: 64,
+                        color: AppColors.primaryColor.withValues(alpha: 0.4),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        context.tr('no_shops_available'),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: AppColors.primaryColor.withValues(alpha: 0.8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               )
             else if (noResults)
               SliverFillRemaining(
@@ -180,16 +162,26 @@ class _ShopsListViewState extends State<ShopsListView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.search_off, size: 64, color: Colors.grey[500]),
+                      Icon(
+                        Icons.search_off,
+                        size: 64,
+                        color: AppColors.primaryColor.withValues(alpha: 0.4),
+                      ),
                       const SizedBox(height: 16),
                       Text(
-                        'No results',
-                        style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+                        context.tr('no_results'),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: AppColors.primaryColor.withValues(alpha: 0.9),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Try different search or filters',
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                        context.tr('try_different_search_or_filters'),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.primaryColor.withValues(alpha: 0.7),
+                        ),
                       ),
                     ],
                   ),
@@ -198,7 +190,8 @@ class _ShopsListViewState extends State<ShopsListView> {
             else
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (_, i) => ShopCard(shop: displayed[i]),
+                  (context, i) =>
+                      AnimatedShopCard(shop: displayed[i], index: i),
                   childCount: displayed.length,
                 ),
               ),

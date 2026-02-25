@@ -29,5 +29,20 @@
   "favourite": "Favourite",
   "settings": "Settings",
   "no_favourites_yet": "No favourites yet",
-  "retry": "Retry"
+  "retry": "Retry",
+  "grocery_stores": "Grocery Stores",
+  "search_by_name_or_description": "Search by name or description",
+  "sort": "Sort",
+  "sort_eta_asc": "ETA (asc)",
+  "sort_min_order_asc": "Min order (asc)",
+  "open_only": "Open only",
+  "clear": "Clear",
+  "no_shops_available": "No shops available",
+  "no_results": "No results",
+  "try_different_search_or_filters": "Try different search or filters",
+  "eta": "ETA",
+  "min_order": "Min",
+  "open": "Open",
+  "closed": "Closed",
+  "users": "Users"
 }

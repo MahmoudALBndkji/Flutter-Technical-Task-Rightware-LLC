@@ -64,7 +64,7 @@ class _LogoAnimationLoadingState extends State<LogoAnimationLoading>
                 color: Colors.black,
               ),
               child: Text(
-                widget.message.tr(),
+                context.tr(widget.message),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColors.primaryColor),
               ),

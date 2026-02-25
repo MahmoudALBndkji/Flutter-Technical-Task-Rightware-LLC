@@ -20,9 +20,14 @@ class ShopState extends Equatable {
     if (searchQuery.trim().isNotEmpty) {
       final q = searchQuery.trim().toLowerCase();
       list = list.where((s) {
-        final name = s.name.toLowerCase();
-        final desc = s.descriptionText.toLowerCase();
-        return name.contains(q) || desc.contains(q);
+        final nameEn = (s.shopName?.en ?? '').toLowerCase();
+        final nameAr = (s.shopName?.ar ?? '').toLowerCase();
+        final descEn = (s.description?.en ?? '').toLowerCase();
+        final descAr = (s.description?.ar ?? '').toLowerCase();
+        return nameEn.contains(q) ||
+            nameAr.contains(q) ||
+            descEn.contains(q) ||
+            descAr.contains(q);
       }).toList();
     }
     if (openOnly) {
