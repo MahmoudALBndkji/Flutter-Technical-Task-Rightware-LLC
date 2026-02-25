@@ -26,8 +26,6 @@
   "general_error": "There was an error, please try again",
   "request_cancelled": "Request was cancelled",
   "bad_certificate_error": "Bad certificate error",
-  "users": "Users",
-  "user_details": "User Details",
   "favourite": "Favourite",
   "settings": "Settings",
   "no_favourites_yet": "No favourites yet",

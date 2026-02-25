@@ -26,8 +26,6 @@
   "general_error": "حدث خطأ، يرجى المحاولة مرة أخرى",
   "request_cancelled": "تم إلغاء الطلب",
   "bad_certificate_error": "شهادة غير صالحة",
-  "users": "المستخدمون",
-  "user_details": "تفاصيل المستخدم",
   "favourite": "المفضلة",
   "settings": "الإعدادات",
   "no_favourites_yet": "لا يوجد مفضلات بعد",
