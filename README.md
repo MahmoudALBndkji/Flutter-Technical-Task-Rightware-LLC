@@ -2,6 +2,13 @@
 
 Flutter application for browsing grocery stores (shops) with search, sort, filter, favorites, and offline support. Supports English and Arabic with RTL-aware UI.
 
+## Preview & Try the app
+
+| | |
+|---|---|
+| **Preview (demo video)** | Watch a walkthrough of the app: [Demo App.mp4](https://drive.google.com/file/d/1z0tAaQr20a3WAc4kqGMvPM3ZWJrLxCPU/view?t=0) on Google Drive. |
+| **Try the app (APK)** | Download **Grocery Stores App.apk** for Android from the shared folder: [Grocery Stores App – Google Drive](https://drive.google.com/drive/folders/1qeilcVZ_RHDuWmLfvD33jT5eOZnotwVo?usp=sharing). Install on your device and run (you may need to allow installation from unknown sources). |
+
 ## Features
 
 - **Shops list** – Cover photo, name, description, ETA, minimum order, location, Open/Closed badge. Tap to open shop details.
