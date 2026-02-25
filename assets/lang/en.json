@@ -50,5 +50,8 @@
   "shop_details": "Shop details",
   "back": "Back",
   "favourites": "Favourites",
-  "remove": "Remove"
+  "remove": "Remove",
+  "change_language": "Change language",
+  "app_name": "Grocery Stores App",
+  "version": "Version"
 }
