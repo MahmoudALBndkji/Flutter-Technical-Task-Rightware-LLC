@@ -13,6 +13,7 @@ Flutter application for browsing grocery stores (shops) with search, sort, filte
 - **Settings** – Avatar, language toggle (EN/AR), app name, version.
 - **Connectivity** – Root snackbar when going offline (grey) or back online (green). Pull-to-refresh on shops list only when online.
 - **Offline & cache** – Shops list and favorites are persisted; after restart or when offline, last data is shown. Refresh indicator recalls the API only when online.
+- **Security** – Device checks (root/jailbreak, developer mode, emulator); restricted screen with countdown and app exit when a threat is detected. See [Security](docs/security.md).
 
 ## How to Run
 
@@ -71,6 +72,7 @@ If you omit `--dart-define=ENV=...`, the app defaults to `dev`.
 | [Favorites feature](docs/favorites-feature.md) | Favorites Cubit, persistence, and UI. |
 | [Settings & localization](docs/settings-and-localization.md) | Settings screen, language switch, and translations. |
 | [Connectivity & offline](docs/connectivity-and-offline.md) | Connectivity snackbar and offline/cache behavior. |
+| [Security](docs/security.md) | Device security checks, SecurityWrapper, RestrictedScreen, and flow. |
 | [Configuration and env](docs/configuration-and-env.md) | Env setup, run modes, and API configuration. |
 
 ## Key Dependencies
@@ -82,6 +84,8 @@ If you omit `--dart-define=ENV=...`, the app defaults to `dev`.
 - `cached_network_image` – image caching with logo placeholder/error
 - `flutter_secure_storage` – e.g. locale persistence
 - `envied` – compile-time env from `.env.*`
+- `root_checker_plus` – root/jailbreak and developer mode detection
+- `device_info_plus` – physical device vs emulator/simulator
 
 ## Assumptions & trade-offs
 

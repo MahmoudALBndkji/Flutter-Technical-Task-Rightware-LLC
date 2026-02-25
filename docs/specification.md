@@ -55,6 +55,20 @@
 | Don’t lose data on restart | Shops and favorites state persisted with HydratedBloc. |
 | Refresh shops when online | Pull-to-refresh on list; calls API only if online. |
 
+### Security
+
+| Requirement | Implementation |
+|-------------|----------------|
+| Block rooted devices (Android) | SecurityService + RootCheckerPlus; redirect to restricted screen. |
+| Block jailbroken devices (iOS) | SecurityService + RootCheckerPlus; redirect to restricted screen. |
+| Block when developer mode enabled (Android) | SecurityService + RootCheckerPlus; redirect to restricted screen. |
+| Block on emulator/simulator | SecurityService + DeviceInfoPlugin (non-physical device); redirect to restricted screen. |
+| Restricted experience | Full-screen alert with threat message, countdown (e.g. 20 s), then app exit. |
+| Re-check periodically | SecurityWrapper runs security check every 2 minutes while user is on wrapped screens. |
+| Localized security messages | All threat and alert strings use `context.tr(...)`; keys in en/ar JSON. |
+
+See [Security](security.md) for flow, components (SecurityService, SecurityWrapper, RestrictedScreen), and configuration.
+
 ---
 
 ## Data Models

@@ -16,7 +16,8 @@ lib/
 │   ├── languages/           # Localization, LanguageCubit
 │   ├── network/             # ConnectivityCubit, bloc observer, secure storage, HTTP
 │   ├── routing/             # go_router, app_paths
-│   ├── services/            # API consumer, Dio, injection_container
+│   ├── security/            # SecurityWrapper, RestrictedScreen
+│   ├── services/            # API consumer, Dio, SecurityService, injection_container
 │   ├── utils/               # Styles, assets, themes
 │   └── widgets/             # Reusable widgets (e.g. AppCachedNetworkImage, LogoAnimationLoading)
 ├── features/
@@ -52,11 +53,12 @@ Cubits that are HydratedCubit are still registered as normal; HydratedBloc uses 
 
 ## Routing (go_router)
 
-- **Paths** (`app_paths.dart`): `/` (splash), `/home`, `/shop/details`, `/favorites`.
+- **Paths** (`app_paths.dart`): `/` (splash), `/home`, `/shop/details`, `/favorites`, `/restricted`.
 - **Router** (`app_router.dart`):
-  - Splash at `/`.
-  - Home at `/home`: provides HomeCubit, ShopCubit, FavoritesCubit; loads shops if data is null/empty; builds `HomeLayout`.
-  - Shop details at `/shop/details`: receives `ShopModel` in `state.extra`; provides FavoritesCubit; builds `ShopDetailsScreen`.
+  - **Restricted** at `/restricted`: query `threat`; builds `RestrictedScreen(threat)` (no SecurityWrapper).
+  - **Splash** at `/`: wrapped in `SecurityWrapper`; builds `SplashScreen`.
+  - **Home** at `/home`: wrapped in `SecurityWrapper`; provides HomeCubit, ShopCubit, FavoritesCubit; loads shops if data is null/empty; builds `HomeLayout`.
+  - **Shop details** at `/shop/details`: wrapped in `SecurityWrapper`; receives `ShopModel` in `state.extra`; provides FavoritesCubit; builds `ShopDetailsScreen`.
 
 Navigator key is used for global navigator state (e.g. localization).
 
@@ -66,6 +68,7 @@ Navigator key is used for global navigator state (e.g. localization).
 - **Localization** – `AppLocalizations`, `context.tr('key')`, `currentLangAr()`; JSON in `assets/lang/en.json`, `assets/lang/ar.json`.
 - **Cached images** – `AppCachedNetworkImage` (cached_network_image, logo placeholder/error, optional memCacheWidth/Height).
 - **Connectivity** – `ConnectivityCubit` (connectivity_plus); root snackbar in `MyApp` builder.
+- **Security** – `SecurityService` (root/jailbreak, developer mode, emulator; see [Security](security.md)), `SecurityWrapper` (per-route check + periodic re-check), `RestrictedScreen` (block UI and exit). Splash, home, and shop-details routes are wrapped with `SecurityWrapper`.
 
 ## Separation of Concerns
 
