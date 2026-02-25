@@ -7,10 +7,12 @@ import 'package:flutter_technical_task_rightware_llc/my_app.dart';
 import 'package:flutter_technical_task_rightware_llc/core/errors/custom_error.dart';
 import 'package:flutter_technical_task_rightware_llc/core/network/bloc_observer.dart';
 import 'package:flutter_technical_task_rightware_llc/core/network/local/http_certificate.dart';
+import 'package:flutter_technical_task_rightware_llc/core/env/init_env.dart';
 import 'package:flutter_technical_task_rightware_llc/core/services/injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  initEnv();
   await SecureStorage.instance.init();
   HttpOverrides.global = MyHttpOverrides();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

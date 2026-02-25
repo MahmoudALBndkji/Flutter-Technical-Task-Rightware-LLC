@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_technical_task_rightware_llc/core/env/init_env.dart';
 import 'package:flutter_technical_task_rightware_llc/core/errors/failures.dart';
-import 'package:flutter_technical_task_rightware_llc/core/services/api/end_points.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +22,7 @@ class DioConsumer extends ApiConsumer {
     };
 
     client.options
-      ..baseUrl = baseUrl
+      ..baseUrl = env.baseUrl
       ..responseType = ResponseType.plain
       ..followRedirects = false;
     client.interceptors.add(di.sl<AppIntercepters>());
@@ -37,14 +37,6 @@ class DioConsumer extends ApiConsumer {
           compact: true,
           maxWidth: 90,
           enabled: kDebugMode,
-          // filter: (options, args) {
-          //   // don't print requests with uris containing '/posts'
-          //   if (options.path.contains('/posts')) {
-          //     return false;
-          //   }
-          //   // don't print responses with unit8 list data
-          //   return !args.isResponse || !args.hasUint8ListData;
-          // },
         ),
       );
     }
