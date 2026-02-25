@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_technical_task_rightware_llc/core/base/base_state.dart';
 import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
 import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
+import 'package:flutter_technical_task_rightware_llc/core/network/connectivity_cubit.dart';
 import 'package:flutter_technical_task_rightware_llc/core/widgets/logo_animation_loading.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/cubits/shop/shop_cubit.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/animated_shop_card.dart';
@@ -95,8 +96,18 @@ class _ShopsListViewState extends State<ShopsListView> {
         final isEmpty = (state.shops.data ?? []).isEmpty;
         final noResults = !isEmpty && displayed.isEmpty;
 
-        return CustomScrollView(
-          slivers: [
+        return RefreshIndicator(
+          onRefresh: () async {
+            if (context.read<ConnectivityCubit>().state ==
+                ConnectivityStatus.offline) {
+              return;
+            }
+            await context.read<ShopCubit>().loadShops();
+          },
+          color: AppColors.primaryColor,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 16),
@@ -195,7 +206,8 @@ class _ShopsListViewState extends State<ShopsListView> {
                   childCount: displayed.length,
                 ),
               ),
-          ],
+            ],
+          ),
         );
       },
     );

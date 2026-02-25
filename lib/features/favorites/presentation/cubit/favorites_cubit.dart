@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_state.dart';
+import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-class FavoritesCubit extends Cubit<FavoritesState> {
+class FavoritesCubit extends HydratedCubit<FavoritesState> {
   FavoritesCubit() : super(const FavoritesState());
 
   void addFavorite(ShopModel shop) {
@@ -25,4 +25,11 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       addFavorite(shop);
     }
   }
+
+  @override
+  FavoritesState? fromJson(Map<String, dynamic> json) =>
+      FavoritesState.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(FavoritesState state) => state.toJson();
 }

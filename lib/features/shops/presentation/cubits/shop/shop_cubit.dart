@@ -1,14 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_technical_task_rightware_llc/core/base/base_state.dart';
 import 'package:flutter_technical_task_rightware_llc/core/errors/failures.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/repos/shop_repository.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'shop_state.dart';
 
-class ShopCubit extends Cubit<ShopState> {
+class ShopCubit extends HydratedCubit<ShopState> {
   final ShopRepository _repository;
 
   ShopCubit({required ShopRepository repository})
@@ -73,4 +73,10 @@ class ShopCubit extends Cubit<ShopState> {
       openOnly: false,
     ));
   }
+
+  @override
+  ShopState? fromJson(Map<String, dynamic> json) => ShopState.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(ShopState state) => state.toJson();
 }

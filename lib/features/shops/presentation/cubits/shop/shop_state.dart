@@ -68,6 +68,61 @@ class ShopState extends Equatable {
     );
   }
 
+  /// For HydratedBloc: persist shops list so it survives app restart (e.g. offline).
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'shops': <String, dynamic>{
+        'status': shops.status.name,
+        'data': shops.data?.map((e) => e.toJson()).toList(),
+        'error': shops.error,
+      },
+      'searchQuery': searchQuery,
+      'sortBy': sortBy.name,
+      'openOnly': openOnly,
+    };
+  }
+
+  /// For HydratedBloc: restore cached state.
+  static ShopState fromJson(Map<String, dynamic> json) {
+    final shopsMap = json['shops'] as Map<String, dynamic>?;
+    BaseState<List<ShopModel>> shops = const BaseState();
+    if (shopsMap != null) {
+      final statusStr = shopsMap['status'] as String?;
+      var status = BaseStatus.initial;
+      if (statusStr != null) {
+        try {
+          status = BaseStatus.values.firstWhere((e) => e.name == statusStr);
+        } catch (_) {}
+      }
+      List<ShopModel>? data;
+      final dataList = shopsMap['data'] as List<dynamic>?;
+      if (dataList != null && dataList.isNotEmpty) {
+        data = dataList
+            .map((e) =>
+                ShopModel.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList();
+      }
+      shops = BaseState(
+        status: status,
+        data: data,
+        error: shopsMap['error'] as String?,
+      );
+    }
+    var sortBy = ShopSortBy.none;
+    final sortStr = json['sortBy'] as String?;
+    if (sortStr != null) {
+      try {
+        sortBy = ShopSortBy.values.firstWhere((e) => e.name == sortStr);
+      } catch (_) {}
+    }
+    return ShopState(
+      shops: shops,
+      searchQuery: json['searchQuery'] as String? ?? '',
+      sortBy: sortBy,
+      openOnly: json['openOnly'] as bool? ?? false,
+    );
+  }
+
   @override
   List<Object?> get props => [shops, searchQuery, sortBy, openOnly];
 }

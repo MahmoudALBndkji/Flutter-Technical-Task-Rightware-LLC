@@ -15,6 +15,28 @@ class FavoritesState extends Equatable {
     return items.any((s) => s.id == id);
   }
 
+  /// For HydratedBloc persistence.
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'items': items.map((e) => e.toJson()).toList(),
+    };
+  }
+
+  /// For HydratedBloc persistence.
+  static FavoritesState fromJson(Map<String, dynamic> json) {
+    final list = json['items'];
+    if (list == null || list is! List) return const FavoritesState();
+    return FavoritesState(
+      items: list
+          .map(
+            (e) => ShopModel.fromJson(
+              Map<String, dynamic>.from(e as Map),
+            ),
+          )
+          .toList(),
+    );
+  }
+
   @override
   List<Object?> get props => [items];
 }
