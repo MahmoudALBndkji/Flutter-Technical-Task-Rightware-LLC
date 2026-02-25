@@ -48,5 +48,7 @@
   "location": "الموقع",
   "description": "الوصف",
   "shop_details": "تفاصيل المتجر",
-  "back": "رجوع"
+  "back": "رجوع",
+  "favourites": "المفضلات",
+  "remove": "إزالة"
 }

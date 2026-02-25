@@ -48,5 +48,7 @@
   "location": "Location",
   "description": "Description",
   "shop_details": "Shop details",
-  "back": "Back"
+  "back": "Back",
+  "favourites": "Favourites",
+  "remove": "Remove"
 }

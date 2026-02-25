@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
 import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
 import 'package:flutter_technical_task_rightware_llc/core/widgets/app_cached_network_image.dart';
 import 'package:flutter_technical_task_rightware_llc/core/utils/styles.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_state.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/widgets/favorite_heart_button.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 
 class ShopCard extends StatelessWidget {
@@ -35,11 +39,26 @@ class ShopCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CoverPhoto(
-            coverPhoto: shop.coverPhoto,
-            isOpen: isOpen,
-            openLabel: context.tr('open'),
-            closedLabel: context.tr('closed'),
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              CoverPhoto(
+                coverPhoto: shop.coverPhoto,
+                isOpen: isOpen,
+                openLabel: context.tr('open'),
+                closedLabel: context.tr('closed'),
+              ),
+              BlocBuilder<FavoritesCubit, FavoritesState>(
+                builder: (context, state) {
+                  return FavoriteHeartButton(
+                    isFavorite: state.isFavorite(shop),
+                    onTap: () => context.read<FavoritesCubit>().toggleFavorite(shop),
+                    size: 26,
+                    padding: const EdgeInsets.all(8),
+                  );
+                },
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(12),

@@ -7,6 +7,7 @@ import 'package:flutter_technical_task_rightware_llc/core/languages/cubit/langua
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/datasources/shop_data_source.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/datasources/shop_remote_data_source.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/repos/shop_repository.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/cubits/shop/shop_cubit.dart';
 
 final sl = GetIt.instance;
@@ -22,4 +23,5 @@ Future<void> initServiceLocator() async {
   sl.registerLazySingleton<ShopDataSource>(() => ShopRemoteDataSource(sl()));
   sl.registerLazySingleton<ShopRepository>(() => ShopRepository(sl()));
   sl.registerLazySingleton<ShopCubit>(() => ShopCubit(repository: sl()));
+  sl.registerLazySingleton<FavoritesCubit>(() => FavoritesCubit());
 }

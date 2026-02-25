@@ -8,6 +8,7 @@ import 'package:flutter_technical_task_rightware_llc/features/home/presentation/
 import 'package:flutter_technical_task_rightware_llc/features/home/presentation/screens/home_layout.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/cubits/shop/shop_cubit.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/screens/shop_details_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -36,6 +37,7 @@ class AppRouter {
             providers: [
               BlocProvider(create: (_) => HomeCubit()),
               BlocProvider.value(value: shopCubit),
+              BlocProvider.value(value: sl<FavoritesCubit>()),
             ],
             child: const HomeLayout(),
           );
@@ -46,7 +48,10 @@ class AppRouter {
         name: 'shop-details',
         builder: (context, state) {
           final shop = state.extra as ShopModel;
-          return ShopDetailsScreen(shop: shop);
+          return BlocProvider.value(
+            value: sl<FavoritesCubit>(),
+            child: ShopDetailsScreen(shop: shop),
+          );
         },
       ),
     ],

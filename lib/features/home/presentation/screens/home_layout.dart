@@ -2,6 +2,7 @@ import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.d
 import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
 import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_state.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:flutter_technical_task_rightware_llc/features/settings/presentation/screens/settings_screen.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/screens/shops_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class HomeLayout extends StatelessWidget {
 
   static final List<Widget> _screens = <Widget>[
     const ShopsScreen(key: ValueKey('shops_screen')),
+    const FavoritesScreen(key: ValueKey('favorites_screen')),
     const SettingsScreen(key: ValueKey('settings_screen')),
   ];
 
@@ -31,6 +33,10 @@ class HomeLayout extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: Icon(Icons.store_outlined),
                 label: context.tr('grocery_stores'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_border),
+                label: context.tr('favourites'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings_outlined),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
 import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/cubit/favorites_state.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/widgets/favorite_heart_button.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shop_details/shop_details_cover.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shop_details/shop_details_description.dart';
@@ -83,6 +87,19 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen>
             fontSize: 18,
           ),
         ),
+        actions: [
+          BlocBuilder<FavoritesCubit, FavoritesState>(
+            builder: (context, state) {
+              return FavoriteHeartButton(
+                isFavorite: state.isFavorite(widget.shop),
+                onTap: () =>
+                    context.read<FavoritesCubit>().toggleFavorite(widget.shop),
+                size: 26,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
