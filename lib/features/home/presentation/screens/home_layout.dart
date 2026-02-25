@@ -1,16 +1,14 @@
-import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
-import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
-import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_cubit.dart';
-import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_state.dart';
-import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/screens/favorites_screen.dart';
-import 'package:flutter_technical_task_rightware_llc/features/settings/presentation/screens/settings_screen.dart';
-import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/screens/shops_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_technical_task_rightware_llc/features/favorites/presentation/screens/favorites_screen.dart';
+import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_cubit.dart';
+import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_state.dart';
+import 'package:flutter_technical_task_rightware_llc/features/home/presentation/widgets/home_bottom_nav_bar.dart';
+import 'package:flutter_technical_task_rightware_llc/features/settings/presentation/screens/settings_screen.dart';
+import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/screens/shops_screen.dart';
 
 class HomeLayout extends StatelessWidget {
   const HomeLayout({super.key});
-
   static final List<Widget> _screens = <Widget>[
     const ShopsScreen(key: ValueKey('shops_screen')),
     const FavoritesScreen(key: ValueKey('favorites_screen')),
@@ -23,26 +21,8 @@ class HomeLayout extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: _screens[state.selectedIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: AppColors.blackColor.withValues(alpha: 0.9),
-            selectedItemColor: AppColors.primaryColor,
-            unselectedItemColor: AppColors.whiteColor,
-            currentIndex: state.selectedIndex,
-            onTap: (index) => context.read<HomeCubit>().setSelectedIndex(index),
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.store_outlined),
-                label: context.tr('grocery_stores'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_border),
-                label: context.tr('favourites'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                label: context.tr('settings'),
-              ),
-            ],
+          bottomNavigationBar: HomeBottomNavBar(
+            selectedIndex: state.selectedIndex,
           ),
         );
       },

@@ -13,91 +13,74 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.primaryColor.withValues(alpha: 0.12),
-              AppColors.secondaryColor.withValues(alpha: 0.08),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
-                  child: Text(
-                    context.tr('favourites'),
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor.withValues(alpha: 0.95),
-                    ),
-                  ),
+    return SafeArea(
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+              child: Text(
+                context.tr('favourites'),
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor.withValues(alpha: 0.95),
                 ),
               ),
-              BlocBuilder<FavoritesCubit, FavoritesState>(
-                builder: (context, state) {
-                  if (state.items.isEmpty) {
-                    return SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.favorite_border_rounded,
-                              size: 80,
-                              color: AppColors.primaryColor.withValues(alpha: 0.4),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              context.tr('no_favourites_yet'),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: AppColors.primaryColor.withValues(alpha: 0.8),
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final shop = state.items[index];
-                        final isAr = currentLangAr();
-                        final displayName = isAr
-                            ? (shop.shopName?.ar ?? shop.shopName?.en ?? '—')
-                            : (shop.shopName?.en ?? shop.shopName?.ar ?? '—');
-                        return FavoriteItemTile(
-                          shop: shop,
-                          displayName: displayName,
-                          isFavorite: state.isFavorite(shop),
-                          onTap: () => context.push(
-                            AppPaths.shopDetails,
-                            extra: shop,
-                          ),
-                          onRemoveFavorite: () =>
-                              context.read<FavoritesCubit>().removeFavorite(shop),
-                        );
-                      },
-                      childCount: state.items.length,
-                    ),
-                  );
-                },
-              ),
-            ],
+            ),
           ),
-        ),
+          BlocBuilder<FavoritesCubit, FavoritesState>(
+            builder: (context, state) {
+              if (state.items.isEmpty) {
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.favorite_border_rounded,
+                          size: 80,
+                          color: AppColors.primaryColor.withValues(alpha: 0.4),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          context.tr('no_favourites_yet'),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: AppColors.primaryColor.withValues(
+                              alpha: 0.8,
+                            ),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final shop = state.items[index];
+                  final isAr = currentLangAr();
+                  final displayName = isAr
+                      ? (shop.shopName?.ar ?? shop.shopName?.en ?? '—')
+                      : (shop.shopName?.en ?? shop.shopName?.ar ?? '—');
+                  return FavoriteItemTile(
+                    shop: shop,
+                    displayName: displayName,
+                    isFavorite: state.isFavorite(shop),
+                    onTap: () =>
+                        context.push(AppPaths.shopDetails, extra: shop),
+                    onRemoveFavorite: () =>
+                        context.read<FavoritesCubit>().removeFavorite(shop),
+                  );
+                }, childCount: state.items.length),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
