@@ -1,24 +1,36 @@
-# Grocery Stores – Flutter App
+# Grocery Stores App
 
-Flutter application that displays a list of grocery stores (shops) with search, sort, and filter (Track A).
+Flutter application for browsing grocery stores (shops) with search, sort, filter, favorites, and offline support. Supports English and Arabic with RTL-aware UI.
+
+## Features
+
+- **Shops list** – Cover photo, name, description, ETA, minimum order, location, Open/Closed badge. Tap to open shop details.
+- **Search** – Debounced search by shop name or description (~400 ms).
+- **Sort** – By ETA (ascending) or minimum order (ascending).
+- **Filter** – “Open only” to show only open shops; clear button to reset.
+- **Shop details** – Full-screen details with cover, info, and description; favorite heart in app bar.
+- **Favorites** – Add/remove from list and details; list persisted across app restarts (HydratedBloc).
+- **Settings** – Avatar, language toggle (EN/AR), app name, version.
+- **Connectivity** – Root snackbar when going offline (grey) or back online (green). Pull-to-refresh on shops list only when online.
+- **Offline & cache** – Shops list and favorites are persisted; after restart or when offline, last data is shown. Refresh indicator recalls the API only when online.
 
 ## How to Run
 
 ### Prerequisites
 
-- Flutter SDK (see `environment.sdk` in `pubspec.yaml`)
+- Flutter SDK (see `environment.sdk` in `pubspec.yaml`, e.g. ^3.10.8)
 - Dart 3.x
 
 ### Configuration
 
-The app reads the shops API URL and secret key from environment files. Configure them before running:
+The app reads the shops API base URL and secret key from environment files:
 
-1. **Environment files** (already set up under `env/`):
+1. **Environment files** (under `env/`):
    - `env/.env.dev` – development
    - `env/.env.prod` – production
 
 2. **Required variables:**
-   - `BASE_URL` – full URL of the shops API (e.g. `https://api.orianosy.com/shop/test/find/all/shop`)
+   - `BASE_URL` – full URL of the shops API (e.g. `https://api.example.com/shop/test/find/all/shop`)
    - `SECRET_KEY` – API secret key (sent in request headers)
 
 3. **Regenerate env code** after changing `.env.*` files:
@@ -39,38 +51,41 @@ flutter run --dart-define=ENV=dev
 flutter run --dart-define=ENV=prod
 ```
 
-If you omit `--dart-define=ENV=...`, the app defaults to `dev` and uses `env/.env.dev`.
-
-## Features
-
-- **Shops list**: Cover photo, name, description, estimated delivery time, minimum order, location, Open/Closed badge.
-- **Search**: Debounced search by shop name or description (~400 ms).
-- **Sort**: By ETA (ascending) or minimum order (ascending).
-- **Filter**: Toggle “Open only” to show only open shops.
-- **Clear**: Button to reset search, sort, and filter.
-- **States**: Loading, error (with retry), empty list, and “no results” when filters/search return nothing.
+If you omit `--dart-define=ENV=...`, the app defaults to `dev`.
 
 ## Architecture
 
-- **State management**: Cubit (flutter_bloc) with clear separation of UI, state, and data.
-- **Structure** (aligned with `lib/features/users/`):
-  - **Data**: `data/datasources/` (abstract + remote), `data/models/`, `data/repos/`.
-  - **Presentation**: `presentation/cubits/shop/`, `presentation/screens/`, `presentation/widgets/`.
-- **DI**: GetIt in `lib/core/services/injection_container.dart`; env and shops stack registered there.
-- **Routing**: go_router; Shops is the first tab on the home layout.
-
-## Error Handling
-
-- **Network**: Failures mapped to user-facing messages (timeout, no connection, server errors).
-- **UI**: Loading indicator while fetching, error message + Retry on failure, empty and “no results” states.
-
-## Assumptions & Trade-offs
-
-- **API shape**: Shops API returns a JSON array (or an object with `data` / `shops`). Both snake_case and camelCase keys are accepted (normalized in the data source).
-- **Env**: `initEnv()` is called in `main()` before `initServiceLocator()` so `env.baseUrl` and `env.secretKey` are available for the shops API. Dio’s default base URL remains for other endpoints (e.g. users); shops use the full URL from `env.baseUrl` with `secretKey` in headers.
-- **Shops tab**: Shops are the first tab in the bottom navigation so the grocery list is the default view after splash.
+- **State management** – Cubit (flutter_bloc). Shops and Favorites use HydratedCubit for persistence.
+- **Structure** – Feature-based: `lib/features/<feature>/` with data (datasources, models, repos) and presentation (cubits, screens, widgets).
+- **DI** – GetIt in `lib/core/services/injection_container.dart`.
+- **Routing** – go_router; paths in `lib/core/routing/app_paths.dart`, routes in `app_router.dart`.
+- **Localization** – `context.tr('key')`, keys in `assets/lang/en.json` and `assets/lang/ar.json`; `currentLangAr()` for en/ar model fields.
 
 ## Documentation
 
-- [Shops feature (Track A)](docs/shops-feature.md) – data flow, Cubit, UI, and API usage.
-- [Configuration and env](docs/configuration-and-env.md) – env setup and run modes.
+| Document | Description |
+|----------|-------------|
+| [Specification](docs/specification.md) | Product and technical specification, data models, API, requirements. |
+| [Architecture](docs/architecture.md) | App structure, DI, routing, state, and core components. |
+| [Shops feature](docs/shops-feature.md) | Shops list, details, data flow, Cubit, caching, and refresh. |
+| [Favorites feature](docs/favorites-feature.md) | Favorites Cubit, persistence, and UI. |
+| [Settings & localization](docs/settings-and-localization.md) | Settings screen, language switch, and translations. |
+| [Connectivity & offline](docs/connectivity-and-offline.md) | Connectivity snackbar and offline/cache behavior. |
+| [Configuration and env](docs/configuration-and-env.md) | Env setup, run modes, and API configuration. |
+
+## Key Dependencies
+
+- `flutter_bloc` / `hydrated_bloc` – state and persistence
+- `go_router` – navigation
+- `dio` – HTTP (shops API)
+- `connectivity_plus` – online/offline
+- `cached_network_image` – image caching with logo placeholder/error
+- `flutter_secure_storage` – e.g. locale persistence
+- `envied` – compile-time env from `.env.*`
+
+## Assumptions & trade-offs
+
+- Shops API returns a JSON array (or object with a list). Keys are normalized in the data source.
+- `initEnv()` is called in `main()` before `initServiceLocator()` so env is available for the shops API.
+- Connectivity is best-effort (device connectivity state); actual reachability to the API may differ.
+- Favorites and shops cache are stored via HydratedBloc (default storage directory); no encryption.

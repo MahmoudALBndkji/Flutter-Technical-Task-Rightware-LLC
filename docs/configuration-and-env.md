@@ -48,3 +48,7 @@ The shops feature uses:
 - **Header**: `secretKey: env.secretKey`.
 
 No other code changes are needed when switching dev/prod as long as the corresponding `.env.*` files are set correctly and code generation has been run.
+
+## Related
+
+- **Connectivity**: The app uses `connectivity_plus` for online/offline status; see [Connectivity & offline](connectivity-and-offline.md). Env is only used for the shops API base URL and secret key.
