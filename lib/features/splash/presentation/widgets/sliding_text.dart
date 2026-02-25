@@ -4,7 +4,6 @@ import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.d
 
 class SlidingText extends StatelessWidget {
   const SlidingText({super.key, required this.slidingAnimation});
-
   final Animation<Offset> slidingAnimation;
 
   @override
@@ -13,7 +12,7 @@ class SlidingText extends StatelessWidget {
     builder: (context, _) => SlideTransition(
       position: slidingAnimation,
       child: Text(
-        "Clean Architecture Template",
+        "Grocery Stores",
         textAlign: TextAlign.center,
         style: TextStyles.textStyle20.copyWith(color: AppColors.blackColor),
       ),

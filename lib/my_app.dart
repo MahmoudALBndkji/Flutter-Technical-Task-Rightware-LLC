@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             routerConfig: AppRouter.router,
             locale: locale,
-            title: "Clean Arch Template",
+            title: "Grocery Stores",
             debugShowCheckedModeBanner: false,
             supportedLocales: const [Locale("en"), Locale("ar")],
             localizationsDelegates: const [
