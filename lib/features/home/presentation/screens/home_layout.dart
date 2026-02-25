@@ -1,3 +1,4 @@
+import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
 import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
 import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter_technical_task_rightware_llc/features/home/presentation/cubit/home_state.dart';
@@ -21,6 +22,9 @@ class HomeLayout extends StatelessWidget {
         return Scaffold(
           body: _screens[state.selectedIndex],
           bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: AppColors.blackColor.withValues(alpha: 0.9),
+            selectedItemColor: AppColors.primaryColor,
+            unselectedItemColor: AppColors.whiteColor,
             currentIndex: state.selectedIndex,
             onTap: (index) => context.read<HomeCubit>().setSelectedIndex(index),
             items: [

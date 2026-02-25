@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_technical_task_rightware_llc/core/constants/app_colors.dart';
 import 'package:flutter_technical_task_rightware_llc/core/languages/app_localizations.dart';
+import 'package:flutter_technical_task_rightware_llc/core/widgets/app_cached_network_image.dart';
 import 'package:flutter_technical_task_rightware_llc/core/utils/styles.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 
 class ShopCard extends StatelessWidget {
-  const ShopCard({super.key, required this.shop});
+  const ShopCard({super.key, required this.shop, this.onTap});
   final ShopModel shop;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ShopCard extends StatelessWidget {
         ? (shop.description?.ar ?? shop.description?.en ?? '')
         : (shop.description?.en ?? shop.description?.ar ?? '');
     final isOpen = shop.isOpen;
-    return Card(
+    final card = Card(
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
       elevation: 2,
@@ -114,6 +116,14 @@ class ShopCard extends StatelessWidget {
         ],
       ),
     );
+    if (onTap != null) {
+      return InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: card,
+      );
+    }
+    return card;
   }
 
   String _formatMinOrder(num? value) {
@@ -145,10 +155,11 @@ class CoverPhoto extends StatelessWidget {
         AspectRatio(
           aspectRatio: 2,
           child: coverPhoto != null && coverPhoto!.isNotEmpty
-              ? Image.network(
-                  coverPhoto!,
+              ? AppCachedNetworkImage(
+                  imageUrl: coverPhoto!,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, Object e, StackTrace? st) => _placeholder(),
+                  memCacheWidth: 600,
+                  memCacheHeight: 300,
                 )
               : _placeholder(),
         ),
@@ -157,9 +168,7 @@ class CoverPhoto extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: isOpen
-                  ? AppColors.primaryColor
-                  : AppColors.cancelledColor,
+              color: isOpen ? AppColors.primaryColor : AppColors.cancelledColor,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -184,11 +193,11 @@ class CoverPhoto extends StatelessWidget {
 
   Widget _placeholder() {
     return Container(
-      color: AppColors.secondaryColor.withOpacity(0.2),
+      color: AppColors.secondaryColor.withValues(alpha: 0.2),
       child: Icon(
         Icons.store,
         size: 48,
-        color: AppColors.primaryColor.withOpacity(0.5),
+        color: AppColors.primaryColor.withValues(alpha: 0.5),
       ),
     );
   }

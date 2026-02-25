@@ -44,5 +44,9 @@
   "min_order": "Min",
   "open": "Open",
   "closed": "Closed",
-  "users": "Users"
+  "users": "Users",
+  "location": "Location",
+  "description": "Description",
+  "shop_details": "Shop details",
+  "back": "Back"
 }

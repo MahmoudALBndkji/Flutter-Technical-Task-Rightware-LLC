@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_technical_task_rightware_llc/core/routing/app_paths.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/data/models/shop_model.dart';
 import 'package:flutter_technical_task_rightware_llc/features/shops/presentation/widgets/shop_card.dart';
+import 'package:go_router/go_router.dart';
 
 /// Wraps [ShopCard] with a staggered fade-in animation for list entrance.
 class AnimatedShopCard extends StatefulWidget {
@@ -48,7 +50,13 @@ class _AnimatedShopCardState extends State<AnimatedShopCard>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _fadeAnim,
-      child: ShopCard(shop: widget.shop),
+      child: ShopCard(
+        shop: widget.shop,
+        onTap: () => context.push(
+          AppPaths.shopDetails,
+          extra: widget.shop,
+        ),
+      ),
     );
   }
 }

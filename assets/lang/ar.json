@@ -44,5 +44,9 @@
   "min_order": "الحد الأدنى",
   "open": "مفتوح",
   "closed": "مغلق",
-  "users": "المستخدمون"
+  "users": "المستخدمون",
+  "location": "الموقع",
+  "description": "الوصف",
+  "shop_details": "تفاصيل المتجر",
+  "back": "رجوع"
 }
