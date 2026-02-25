@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_technical_task_rightware_llc/core/security/restricted_screen.dart';
+import 'package:flutter_technical_task_rightware_llc/core/security/security_wrapper.dart';
+import 'package:flutter_technical_task_rightware_llc/core/services/security_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_technical_task_rightware_llc/core/routing/app_paths.dart';
@@ -20,9 +23,25 @@ class AppRouter {
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
+        path: AppPaths.restricted,
+        name: 'restricted',
+        builder: (context, state) {
+          final threatParam = state.uri.queryParameters['threat'];
+          SecurityThreat threat = SecurityThreat.developerModeEnabled;
+          if (threatParam != null) {
+            threat = SecurityThreat.values.firstWhere(
+              (e) => e.name == threatParam,
+              orElse: () => SecurityThreat.developerModeEnabled,
+            );
+          }
+          return RestrictedScreen(threat: threat);
+        },
+      ),
+      GoRoute(
         path: AppPaths.splash,
         name: 'splash',
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) =>
+            SecurityWrapper(child: const SplashScreen()),
       ),
       GoRoute(
         path: AppPaths.home,
@@ -33,13 +52,15 @@ class AppRouter {
               shopCubit.state.shops.data!.isEmpty) {
             shopCubit.loadShops();
           }
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => HomeCubit()),
-              BlocProvider.value(value: shopCubit),
-              BlocProvider.value(value: sl<FavoritesCubit>()),
-            ],
-            child: const HomeLayout(),
+          return SecurityWrapper(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (_) => HomeCubit()),
+                BlocProvider.value(value: shopCubit),
+                BlocProvider.value(value: sl<FavoritesCubit>()),
+              ],
+              child: const HomeLayout(),
+            ),
           );
         },
       ),
@@ -48,9 +69,11 @@ class AppRouter {
         name: 'shop-details',
         builder: (context, state) {
           final shop = state.extra as ShopModel;
-          return BlocProvider.value(
-            value: sl<FavoritesCubit>(),
-            child: ShopDetailsScreen(shop: shop),
+          return SecurityWrapper(
+            child: BlocProvider.value(
+              value: sl<FavoritesCubit>(),
+              child: ShopDetailsScreen(shop: shop),
+            ),
           );
         },
       ),

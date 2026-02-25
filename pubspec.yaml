@@ -26,6 +26,8 @@ dependencies:
   json_annotation: ^4.11.0
   cached_network_image: ^3.4.1
   connectivity_plus: ^6.1.1
+  root_checker_plus: ^1.0.0
+  device_info_plus: ^12.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

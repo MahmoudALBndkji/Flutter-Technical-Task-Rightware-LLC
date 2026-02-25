@@ -5,4 +5,5 @@ class AppPaths {
   static const String shops = '/shops';
   static const String shopDetails = '/shop/details';
   static const String favorites = '/favorites';
+  static const String restricted = '/restricted';
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_technical_task_rightware_llc/core/services/security_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_technical_task_rightware_llc/core/services/api/api_consumer.dart';
 import 'package:flutter_technical_task_rightware_llc/core/services/api/app_interceptors.dart';
@@ -24,4 +25,7 @@ Future<void> initServiceLocator() async {
   sl.registerLazySingleton<ShopRepository>(() => ShopRepository(sl()));
   sl.registerLazySingleton<ShopCubit>(() => ShopCubit(repository: sl()));
   sl.registerLazySingleton<FavoritesCubit>(() => FavoritesCubit());
+
+  // Security Service
+  sl.registerLazySingleton(() => SecurityService());
 }

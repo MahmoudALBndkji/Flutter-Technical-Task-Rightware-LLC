@@ -53,7 +53,7 @@ class _ShopsListViewState extends State<ShopsListView> {
       buildWhen: (p, c) => p != c,
       builder: (context, state) {
         if (state.shops.status.isLoading && state.shops.data == null) {
-          return LogoAnimationLoading(message: 'loading');
+          return const LogoAnimationLoading();
         }
         if (state.shops.status.isFailure) {
           return Center(
